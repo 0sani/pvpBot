@@ -33,7 +33,7 @@ client.once('ready', async () => {
     var d = new Date();
     var currentList = getCurrentList();
     console.log('Bot started at '+d);
-    startMessage = await client.channels.cache.get('725766986415603788').send(getCurrentList());
+    startMessage = await client.channels.cache.get('INSERT OUTPUT CHANNEL HERE').send(getCurrentList());
 });
 
 
@@ -111,7 +111,7 @@ client.on('message', msg => {
             }
         }
         var timeDiff = messageTime-player.timeChanged;
-        if (timeDiff < 8640) { // Make sure to change this back to 86400000
+        if (timeDiff < 86400000) { 
             msg.channel.send('You can only toggle once every 24 hours');
         } else {
             // Updates the time the player changed their status, and changes it accordingly
