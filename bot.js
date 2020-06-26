@@ -13,8 +13,10 @@ function getCurrentList() {
     var d = new Date();
     h = d.getHours();
     m = d.getMinutes();
+    //Sets up list
     let currentList = "```Last updated: "+h+":"+m+"\nList of players";
     currentList = currentList + "\n| Name             | Pvp On/Off |\n-------------------|-------------"
+    //Adds players and statuses to list
     for (i=0; i<playerList.users.length;i++) {
         let user = playerList.users[i].minecraftName;
         let status = playerList.users[i].pvp;
@@ -29,6 +31,7 @@ function getCurrentList() {
 var message = '';
 var listId = '';
 
+//Once bot is turned on send list to output channel
 client.once('ready', async () => {
     var d = new Date();
     var currentList = getCurrentList();
@@ -36,7 +39,7 @@ client.once('ready', async () => {
     startMessage = await client.channels.cache.get('INSERT OUTPUT CHANNEL HERE').send(getCurrentList());
 });
 
-
+//main stuff the bot will do
 client.on('message', msg => {
     var messageContent= msg.content;
 
@@ -61,6 +64,7 @@ client.on('message', msg => {
         } else {
             // By default, it's assumed that player is not in list
             let playerInList = false;
+
             // gets the username and pvp status
             let username = messageContent.match(/player=(.*) /)[1];
             let pvp = messageContent.match(/pvp=(.*)/)[1];
@@ -84,7 +88,8 @@ client.on('message', msg => {
             if (playerInList) {
                 msg.channel.send('You are already in the player list');
             } else {
-                playerList.users.push({ // Adds to the JSON file
+                // Adds to the JSON file
+                playerList.users.push({
                     discordName: msg.author.username,
                     minecraftName: username,
                     pvp: pvp,
@@ -120,7 +125,7 @@ client.on('message', msg => {
                 player.pvp = !player.pvp;
             } else if (messageContent.includes("on")) {
                 player.pvp = true;
-            } else {
+            } else if (messageContent.includes("off")) {
                 player.pvp = false;
             }
 
