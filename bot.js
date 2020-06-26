@@ -22,11 +22,9 @@ function getCurrentList() {
         let status = playerList.users[i].pvp;
         status = status.toString()
         let playerStat = "| "+user+" ".repeat(16-user.length)+ " | "+status+ " ".repeat(10-status.length)+" |";
-        //HEY WHAT'S ALL THE 16-USER.LENGTH STUFF?
         currentList = currentList+"\n"+playerStat;
     }
     currentList = currentList + "```"
-    //WHY "'''"
     return currentList
 }
 
@@ -39,7 +37,6 @@ client.once('ready', async () => {
     var currentList = getCurrentList();
     console.log('Bot started at '+d);
     startMessage = await client.channels.cache.get('INSERT OUTPUT CHANNEL HERE').send(getCurrentList());
-    //INSERT OUTPUT CHANNEL HERE SEEMS UNFINISHED... WERE YOU GONNA CHANGE THAT?
 });
 
 //main stuff the bot will do
@@ -55,7 +52,6 @@ client.on('message', msg => {
     
     // Help Message
     const helpMessage='```Command List:\nUse commands by doing .pvp [command]\n\ninit player="[minecraft username]" - add youself to the list of users\nlist - lists the current pvp statuses\ntoggle - changes pvp status (can also be done using .pvp on or .pvp off)```';
-    //MIGHT WANT TO MAKE IT CLEAR HERE THAT THE BRACKETS ARE NOT INCLUDED
 
     // if the message includes help, it will display the help message
     if (messageContent.includes('help')) {
@@ -69,14 +65,6 @@ client.on('message', msg => {
             // By default, it's assumed that player is not in list
             let playerInList = false;
 
-            // Checks if player is in list
-            for (i=0; i<playerList.users.length; i++) {
-                if (playerList.users[i].name == username[1]) {
-                    playerInList = true;
-                }
-            }//MOVED THIS HERE TO KEEP THE CHECKING IF THE PLAYER IS IN THE LIST IN THE SAME SPOT
-            //INSTEAD OF SAYING, THEY AREN'T [DO OTHER STUFF] WAIT, ARE THEY IN THE LIST?  IT JUST MAKES MORE SENSE THIS WAY
-
             // gets the username and pvp status
             let username = messageContent.match(/player=(.*) /)[1];
             let pvp = messageContent.match(/pvp=(.*)/)[1];
@@ -87,6 +75,13 @@ client.on('message', msg => {
                 pvp = false;
             } else{
                 msg.channel.send('Please enter either true or false')
+            }
+
+            // Checks if player is in list
+            for (i=0; i<playerList.users.length; i++) {
+                if (playerList.users[i].name == username[1]) {
+                    playerInList = true;
+                }
             }
             
             // Tells player they're already in the list
@@ -130,8 +125,7 @@ client.on('message', msg => {
                 player.pvp = !player.pvp;
             } else if (messageContent.includes("on")) {
                 player.pvp = true;
-            } else {
-                //I WOULD PUT IF (MESSAGEcONTENT.INCLUDES("OFF")) BUT THAT'S UR CHOICE
+            } else if (messageContent.includes("off")) {
                 player.pvp = false;
             }
 
